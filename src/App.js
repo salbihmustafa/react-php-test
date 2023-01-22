@@ -1,6 +1,7 @@
 import './App.css';
 import {useState} from 'react';
 import { Form, FormControl, Button, Container, Row, Col, FormLabel, FormGroup } from 'react-bootstrap';
+import Api from "./components/api/api";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -18,19 +19,12 @@ function App() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:8080/react-php-test/src/backend/form-submit.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData),
-    })
-        .then((response) => response.json())
-        .then((data) => {
-          // handle response from the server
-          console.log(data);
+    await Api.post('form-submit.php', formData)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
         });
   };
 
